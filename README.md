@@ -1,6 +1,6 @@
 # Monte Carlo Simulator
-**Author:** _[Your Name]_  
-**Project Name:** _Monte Carlo Simulator_
+**Author:** _Daniel Ra_  
+**Project Name:** _Monte Carlo Simulator (DS5100)_
 
 ---
 
@@ -12,7 +12,7 @@ It allows you to create dice, roll them multiple times, and analyze the results.
 ### Installation
 
 ```bash
-pip install montecarlo-simulator  # (when published to PyPI, otherwise just clone the GitHub repo)
+pip install montecarlo-simulator
 ```
 
 ### Quick Demo
@@ -23,15 +23,15 @@ from montecarlo.die import Die
 from montecarlo.game import Game
 from montecarlo.analyzer import Analyzer
 
-# Step 1: Create a die
+# Create a die
 faces = np.array(['H', 'T'])
 die = Die(faces)
 
-# Step 2: Play a game
+# Play a game
 game = Game([die, die, die])  # Three dice
 game.play(10)                 # Roll 10 times
 
-# Step 3: Analyze the game
+# Analyze the game
 analyzer = Analyzer(game)
 jackpot_count = analyzer.jackpot()
 face_counts = analyzer.face_counts_per_roll()
