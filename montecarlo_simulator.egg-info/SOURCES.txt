@@ -1,0 +1,15 @@
+LICENSE
+README.md
+setup.py
+montecarlo/__init__.py
+montecarlo/analyzer.py
+montecarlo/die.py
+montecarlo/game.py
+montecarlo_simulator.egg-info/PKG-INFO
+montecarlo_simulator.egg-info/SOURCES.txt
+montecarlo_simulator.egg-info/dependency_links.txt
+montecarlo_simulator.egg-info/requires.txt
+montecarlo_simulator.egg-info/top_level.txt
+tests/test_Analyzer.py
+tests/test_Die.py
+tests/test_Game.py

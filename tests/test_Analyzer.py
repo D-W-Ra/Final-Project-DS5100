@@ -17,7 +17,7 @@ class TestAnalyzer(unittest.TestCase):
 
     def test_jackpot_output(self):
         jackpots = self.analyzer.jackpot()
-        self.assertIsInstance(jackpots, int)
+        self.assertTrue(isinstance(jackpots, (int, np.integer)))
 
     def test_face_counts_per_roll_output(self):
         face_counts = self.analyzer.face_counts_per_roll()

@@ -1,5 +1,6 @@
 import unittest
 import numpy as np
+import pandas as pd
 from montecarlo.die import Die
 from montecarlo.game import Game
 

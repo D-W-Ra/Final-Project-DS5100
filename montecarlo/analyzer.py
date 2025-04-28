@@ -1,5 +1,6 @@
 import pandas as pd
 from collections import Counter
+from montecarlo.game import Game
 
 class Analyzer:
     """
@@ -73,8 +74,12 @@ class Analyzer:
         df = self._game.show('wide')
         combos = df.apply(lambda x: tuple(sorted(x)), axis=1)
 
-        self._combo_counts = combos.value_counts().to_frame('count')
+        combo_counts = combos.value_counts()
+        self._combo_counts = combo_counts.to_frame('count')
+
+        self._combo_counts.index = pd.MultiIndex.from_tuples(self._combo_counts.index)
         self._combo_counts.index.names = [f'die_{i}' for i in range(df.shape[1])]
+
         return self._combo_counts
 
     def permutation(self):
@@ -87,6 +92,10 @@ class Analyzer:
         df = self._game.show('wide')
         perms = df.apply(lambda x: tuple(x), axis=1)
 
-        self._perm_counts = perms.value_counts().to_frame('count')
+        perm_counts = perms.value_counts()
+        self._perm_counts = perm_counts.to_frame('count')
+
+        self._perm_counts.index = pd.MultiIndex.from_tuples(self._perm_counts.index)
         self._perm_counts.index.names = [f'die_{i}' for i in range(df.shape[1])]
+
         return self._perm_counts

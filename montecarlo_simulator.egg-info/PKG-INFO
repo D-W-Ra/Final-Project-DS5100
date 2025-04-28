@@ -1,0 +1,8 @@
+Metadata-Version: 2.1
+Name: montecarlo_simulator
+Version: 0.1
+Summary: Monte Carlo Simulator for dice-based games
+Author: Your Name
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: pandas
