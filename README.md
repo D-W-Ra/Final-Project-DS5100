@@ -4,110 +4,174 @@
 
 ---
 
+## Metadata
+
+This project implements a Monte Carlo simulator that can simulate dice rolls (or similar stochastic processes) and analyze the outcomes.  
+It consists of three main classes: **Die**, **Game**, and **Analyzer**.
+
+---
+
 ## Synopsis
 
-This package simulates a Monte Carlo experiment using dice-like objects.  
-It allows you to create dice, roll them multiple times, and analyze the results.
-
-### Installation
+Here is an example of how to install, import, and use the Monte Carlo Simulator:
 
 ```bash
-pip install montecarlo-simulator
+pip install -e .
 ```
 
-### Quick Demo
-
 ```python
+# Import necessary classes
 import numpy as np
 from montecarlo.die import Die
 from montecarlo.game import Game
 from montecarlo.analyzer import Analyzer
 
-# Create a die
+# 1. Create dice
 faces = np.array(['H', 'T'])
-die = Die(faces)
+die1 = Die(faces)
+die2 = Die(faces)
 
-# Play a game
-game = Game([die, die, die])  # Three dice
-game.play(10)                 # Roll 10 times
+# 2. Play a game
+game = Game([die1, die2])
+game.play(100)
 
-# Analyze the game
+# 3. Analyze the game
 analyzer = Analyzer(game)
-jackpot_count = analyzer.jackpot()
-face_counts = analyzer.face_counts_per_roll()
-combo_counts = analyzer.combo()
-perm_counts = analyzer.permutation()
 
-print(f"Jackpots: {jackpot_count}")
-print(face_counts)
-print(combo_counts)
-print(perm_counts)
+# Number of jackpots (rolls where all faces match)
+jackpot_count = analyzer.jackpot()
+print(f"Number of jackpots: {jackpot_count}")
+
+# Face counts per roll
+face_counts = analyzer.face_counts_per_roll()
+print(face_counts.head())
+
+# Combinations
+combo_counts = analyzer.combo()
+print(combo_counts.head())
+
+# Permutations
+perm_counts = analyzer.permutation()
+print(perm_counts.head())
 ```
 
 ---
 
 ## API Description
 
-### Class: `Die`
+Below is a description of each class, including all public methods and attributes:
 
-> A die has N sides or faces, each with an associated weight. Faces can be strings or numbers. Weights default to 1.0 but can be changed after initialization.
+---
 
-#### Public Methods:
-- `__init__(faces: numpy.ndarray)`
-  - **Args:** `faces`: NumPy array of distinct face values (numeric or string)
-  - **Raises:** TypeError, ValueError
+### Die Class
+
+Represents a single die, which can have arbitrary faces and custom weights.
+
+**Attributes:**
+- None publicly accessible.
+
+**Methods:**
+- `__init__(faces: np.ndarray)`
+  - Initializes the die with faces.
+  - **Parameters:**
+    - `faces` (numpy.ndarray): An array of distinct face values (strings or numbers).
+  - **Raises:**
+    - `TypeError` if faces is not a numpy array.
+    - `ValueError` if faces are not unique.
+  - **Returns:** None.
 
 - `change_weight(face, weight)`
-  - **Args:** 
-    - `face` (str or number): The face to change.
-    - `weight` (float or int): New weight.
-  - **Raises:** IndexError, TypeError
+  - Changes the weight of a given face.
+  - **Parameters:**
+    - `face` (str or number): The face value to change.
+    - `weight` (float): The new weight.
+  - **Raises:**
+    - `IndexError` if the face is not found.
+    - `TypeError` if the weight is not numeric.
+  - **Returns:** None.
 
-- `roll(num_rolls=1)`
-  - **Args:** `num_rolls` (int, default=1): Number of times to roll.
-  - **Returns:** list of outcomes.
+- `roll(num_rolls: int = 1)`
+  - Rolls the die a specified number of times.
+  - **Parameters:**
+    - `num_rolls` (int, default=1): Number of rolls.
+  - **Returns:** List of outcomes.
 
 - `show()`
-  - **Returns:** pandas DataFrame of current faces and weights.
+  - Displays the current faces and weights.
+  - **Parameters:** None.
+  - **Returns:** `pandas.DataFrame` with faces and their corresponding weights.
 
 ---
 
-### Class: `Game`
+### Game Class
 
-> A game consists of rolling one or more dice of the same kind multiple times.
+Manages the playing of a game with one or more dice.
 
-#### Public Methods:
+**Attributes:**
+- None publicly accessible.
+
+**Methods:**
 - `__init__(dice: list)`
-  - **Args:** `dice`: A list of Die objects.
+  - Initializes the game with a list of Die objects.
+  - **Parameters:**
+    - `dice` (list): A list containing Die objects.
+  - **Returns:** None.
 
 - `play(num_rolls: int)`
-  - **Args:** `num_rolls`: Number of times to roll all dice.
+  - Rolls all dice for a given number of times.
+  - **Parameters:**
+    - `num_rolls` (int): Number of times to roll the dice.
+  - **Returns:** None.
 
-- `show(form='wide')`
-  - **Args:** 
-    - `form` (str, default='wide'): Return format, either `'wide'` or `'narrow'`.
-  - **Returns:** pandas DataFrame with play results.
-  - **Raises:** ValueError if form not `'wide'` or `'narrow'`.
+- `show(form: str = 'wide')`
+  - Displays the results of the most recent play.
+  - **Parameters:**
+    - `form` (str, default='wide'): Format of results. Can be `'wide'` or `'narrow'`.
+  - **Raises:**
+    - `ValueError` if form is not `'wide'` or `'narrow'`.
+  - **Returns:** `pandas.DataFrame` of results.
 
 ---
 
-### Class: `Analyzer`
+### Analyzer Class
 
-> An Analyzer object takes the results of a single Game object and computes descriptive statistical properties about it.
+Analyzes the results from a completed game.
 
-#### Public Methods:
+**Attributes:**
+- None publicly accessible.
+
+**Methods:**
 - `__init__(game: Game)`
-  - **Args:** `game`: An instance of Game.
-  - **Raises:** ValueError if input not a Game.
+  - Initializes the analyzer with a Game object.
+  - **Parameters:**
+    - `game` (Game): A completed Game object.
+  - **Raises:**
+    - `ValueError` if input is not a Game object.
+  - **Returns:** None.
 
 - `jackpot()`
-  - **Returns:** Integer count of jackpots (all faces identical).
+  - Counts the number of rolls where all faces match.
+  - **Parameters:** None.
+  - **Returns:** Integer count of jackpots.
 
 - `face_counts_per_roll()`
-  - **Returns:** pandas DataFrame of face counts per roll.
+  - Counts the number of times each face appears in each roll.
+  - **Parameters:** None.
+  - **Returns:** `pandas.DataFrame` where rows are rolls and columns are faces.
 
 - `combo()`
-  - **Returns:** pandas DataFrame showing distinct combinations of faces rolled and their counts (order-independent).
+  - Counts distinct combinations (order-independent) of rolled faces.
+  - **Parameters:** None.
+  - **Returns:** `pandas.DataFrame` with MultiIndex of combinations and counts.
 
 - `permutation()`
-  - **Returns:** pandas DataFrame showing distinct permutations of faces rolled and their counts (order-dependent).
+  - Counts distinct permutations (order-dependent) of rolled faces.
+  - **Parameters:** None.
+  - **Returns:** `pandas.DataFrame` with MultiIndex of permutations and counts.
+
+---
+
+# Notes
+
+- All classes and methods include docstrings for easy reference.
+- All inputs are validated, and meaningful errors are raised where appropriate.
